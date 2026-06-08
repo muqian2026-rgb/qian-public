@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>book-learn-distill · 结构示例 Demo</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
     :root { --bg:#f0f2f5; --card:#fff; --text:#1a1a1a; --muted:#8c8c8c; --border:#e8e8e8; --primary:#1890ff; --primary-light:#e6f4ff; }
     * { box-sizing:border-box; margin:0; padding:0; }
@@ -19,7 +18,8 @@
     .muted { color:var(--muted); font-size:13px; }
     .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
     .chip { font-size:12px; padding:6px 12px; border-radius:20px; border:1px solid var(--border); background:#fafafa; }
-    #graph-wrap { height:360px; border:1px dashed var(--border); border-radius:8px; background:#fafafa; }
+    #graph-wrap { height:360px; border:1px dashed var(--border); border-radius:8px; background:#fafafa; display:flex; align-items:center; justify-content:center; }
+    #graph-wrap svg { max-width:100%; height:auto; }
     .locked { background:#f6f8fa; border:1px dashed var(--border); border-radius:8px; padding:16px; text-align:center; color:var(--muted); font-size:13px; }
     a { color:#0969da; }
   </style>
@@ -29,7 +29,7 @@
     <div class="inner">
       <span class="badge">Structure Demo · 非真实书目全文</span>
       <h1>book-learn-distill 知识图谱 · 结构示例</h1>
-      <p style="opacity:.9;font-size:14px;margin-top:6px">仅展示 UI 布局与交互图谱形态；完整书目产出（含书摘、路径阅读）保留在私有学习库。</p>
+      <p style="opacity:.9;font-size:14px;margin-top:6px">仅展示 UI 布局与图谱形态；完整书目产出（含书摘、路径阅读）保留在私有学习库。</p>
     </div>
   </header>
   <div class="banner">
@@ -52,9 +52,28 @@
       </div>
     </section>
     <section class="panel">
-      <h2>C · 可交互知识图谱（合成数据）</h2>
-      <p class="muted">点击圆点查看说明。真实项目会替换为你的书目概念网络。</p>
-      <div id="graph-wrap"><svg id="graph-svg" width="100%" height="100%"></svg></div>
+      <h2>C · 知识图谱（合成数据 · 静态示意）</h2>
+      <p class="muted">真实项目会替换为你的书目概念网络。下图仅为结构示意。</p>
+      <div id="graph-wrap">
+        <svg width="640" height="280" viewBox="0 0 640 280" aria-label="流水线节点示意图">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#bbb"/>
+            </marker>
+          </defs>
+          <line x1="120" y1="140" x2="220" y2="140" stroke="#ccc" stroke-width="2" marker-end="url(#arrow)"/>
+          <line x1="280" y1="140" x2="380" y2="140" stroke="#ccc" stroke-width="2" marker-end="url(#arrow)"/>
+          <line x1="440" y1="140" x2="500" y2="90" stroke="#ccc" stroke-width="2" marker-end="url(#arrow)"/>
+          <line x1="440" y1="140" x2="500" y2="190" stroke="#ccc" stroke-width="2" marker-end="url(#arrow)"/>
+          <g>
+            <circle cx="90" cy="140" r="18" fill="#1890ff"/><text x="118" y="144" font-size="12" fill="#333">Intake</text>
+            <circle cx="250" cy="140" r="18" fill="#1890ff"/><text x="278" y="144" font-size="12" fill="#333">Discover</text>
+            <circle cx="410" cy="140" r="18" fill="#1890ff"/><text x="438" y="144" font-size="12" fill="#333">Synthesize</text>
+            <circle cx="530" cy="90" r="18" fill="#722ed1"/><text x="558" y="94" font-size="12" fill="#333">Skill</text>
+            <circle cx="530" cy="190" r="18" fill="#722ed1"/><text x="528" y="224" font-size="12" fill="#333" text-anchor="middle">知识图谱</text>
+          </g>
+        </svg>
+      </div>
     </section>
     <section class="panel">
       <h2>E · 路径阅读</h2>
@@ -69,46 +88,5 @@
       在 Cursor 里说「学一下 {你的方向}」生成完整版
     </p>
   </main>
-  <script>
-    const nodes = [
-      {id:"intake",label:"Intake",group:"internal"},
-      {id:"discover",label:"Discover",group:"internal"},
-      {id:"skeleton",label:"Skeleton",group:"internal"},
-      {id:"synthesize",label:"Synthesize",group:"internal"},
-      {id:"skill",label:"Domain Skill",group:"external"},
-      {id:"html",label:"知识图谱 HTML",group:"external"},
-    ];
-    const links = [
-      {source:"intake",target:"discover"},
-      {source:"discover",target:"skeleton"},
-      {source:"skeleton",target:"synthesize"},
-      {source:"synthesize",target:"skill"},
-      {source:"synthesize",target:"html"},
-    ];
-    const color = {internal:"#1890ff",external:"#722ed1"};
-    const wrap = document.getElementById("graph-wrap");
-    const svg = d3.select("#graph-svg");
-    const w = wrap.clientWidth, h = wrap.clientHeight;
-    const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d=>d.id).distance(90))
-      .force("charge", d3.forceManyBody().strength(-280))
-      .force("center", d3.forceCenter(w/2, h/2));
-    const link = svg.append("g").selectAll("line").data(links).join("line")
-      .attr("stroke","#ccc").attr("stroke-width",1.5);
-    const node = svg.append("g").selectAll("circle").data(nodes).join("circle")
-      .attr("r",14).attr("fill",d=>color[d.group]||"#999")
-      .call(d3.drag().on("start",dragstarted).on("drag",dragged).on("end",dragended));
-    const label = svg.append("g").selectAll("text").data(nodes).join("text")
-      .text(d=>d.label).attr("font-size",11).attr("dx",18).attr("dy",4).attr("fill","#333");
-    simulation.on("tick",()=>{
-      link.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
-           .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
-      node.attr("cx",d=>d.x).attr("cy",d=>d.y);
-      label.attr("x",d=>d.x).attr("y",d=>d.y);
-    });
-    function dragstarted(e,d){ if(!e.active) simulation.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; }
-    function dragged(e,d){ d.fx=e.x; d.fy=e.y; }
-    function dragended(e,d){ if(!e.active) simulation.alphaTarget(0); d.fx=null; d.fy=null; }
-  </script>
 </body>
 </html>

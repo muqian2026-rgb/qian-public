@@ -11,7 +11,7 @@ disable-model-invocation: false
 > **人读**：[docs/book-learn-distill.md](../../docs/book-learn-distill.md)  
 > **工作区**：[learn/](../../learn/)  
 > **双交付物**：`skills/<slug>/` + `作业输出/<slug>_知识图谱.html`  
-> **并列管线**：无单一教材/年表为主 → [domain-learn](../domain-learn/SKILL.md)（`meta.pipeline`: `"domain"`）
+> **其它管线**（领域/年表、内部体系等）在作者私有库维护，本公开仓库仅含 book 管线。
 
 ## 何时启动
 
@@ -25,7 +25,7 @@ disable-model-invocation: false
 2. Read `${CLAUDE_SKILL_DIR}/prompts/intake.md` 完成 Intake（可 3 问）。
 3. 将方向转为 **slug**（小写英文连字符，如 `behavioral-economics`）。
 4. 若无 `learn/<slug>/`，从 `learn/_template/` 复制；`meta.pipeline` 必须为 `"book"`（缺省视为 book）。
-5. 若 Intake 判定为 **domain**，停止本 Skill，改 Read [domain-learn](../domain-learn/SKILL.md)。
+5. 若 Intake 判定为 **domain** 或 **system**，提示用户在私有学习库使用对应管线。
 
 ```bash
 # 扫是否已有同方向

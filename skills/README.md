@@ -9,7 +9,4 @@
 | [html-public-publish](./html-public-publish/) | 单页 HTML 发布到 Surge 公网 |
 | [docling-ingest](./docling-ingest/) | PDF/DOCX → Markdown 入库 |
 
-双管线学习：
-
-- [book-learn-distill](../book-learn-distill/) — 有权威教材的读书蒸馏
-- [domain-learn](../domain-learn/) — 无单一教材的领域/年表学习
+主学习流水线：[book-learn-distill](../book-learn-distill/)

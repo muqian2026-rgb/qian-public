@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Book Author Persona for K-section QA",
+  "description": "把作者的核心方法论浓缩为意图匹配模型卡，供 K 区前端做「作者视角」自然语言问答。",
+  "type": "object",
+  "required": ["persona", "models"],
+  "properties": {
+    "_note": { "type": "string" },
+    "_source": { "type": "string", "description": "来源 skill 路径，如 ~/.claude/skills/yujun.md" },
+    "persona": {
+      "type": "object",
+      "required": ["name", "tagline", "intro"],
+      "properties": {
+        "name": { "type": "string", "description": "作者名（中文）" },
+        "tagline": { "type": "string", "description": "一句话身份标签，如「前百度产品总监 · 《XX》作者」" },
+        "intro": { "type": "string", "description": "作者核心立场陈述，1-2 句" },
+        "principles": { "type": "array", "items": { "type": "string" }, "description": "硬核原则 3-7 条" }
+      }
+    },
+    "models": {
+      "type": "array",
+      "description": "意图匹配模型卡数组（建议 5-8 个）",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "keywords", "core"],
+        "properties": {
+          "id":       { "type": "string", "description": "kebab-case 唯一标识" },
+          "title":    { "type": "string", "description": "模型短名，如「用户价值公式」" },
+          "keywords": { "type": "array", "items": { "type": "string" }, "description": "触发该模型的关键词数组（中英文混合，长度 ≥ 2 字命中得分高）" },
+          "core":     { "type": "string", "description": "作者原话/方法论核心，支持 **加粗**" },
+          "callout":  { "type": "string", "description": "可选：金句 / 极简口号" },
+          "questions": { "type": "array", "items": { "type": "string" }, "description": "作者会反问的 2-4 个问题（保留作者语气）" },
+          "bookSearchTerms": { "type": "array", "items": { "type": "string" }, "description": "用于书内检索的扩展词" },
+          "sectionRefs": { "type": "array", "items": { "type": "string" }, "description": "对应书内章节号，命中时 boost +5" }
+        }
+      }
+    }
+  }
+}

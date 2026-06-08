@@ -1,0 +1,137 @@
+{
+  "title": "BookLearnGraphData",
+  "type": "object",
+  "required": ["meta", "theory", "nodes", "edges", "controversies"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["slug", "title"],
+      "properties": {
+        "slug": { "type": "string" },
+        "title": { "type": "string" },
+        "version": { "type": "integer" },
+        "updated": { "type": "string" },
+        "learningDepth": { "type": "string" },
+        "contexts": { "type": "array", "items": { "type": "string" } },
+        "books": { "type": "array" }
+      }
+    },
+    "edgeTypeLegend": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "label": { "type": "string" },
+          "explain": { "type": "string" }
+        }
+      }
+    },
+    "theory": {
+      "type": "object",
+      "properties": {
+        "oneLiner": { "type": "string", "description": "骨架一句话定义（正式）" },
+        "definition": { "type": "string", "description": "白话定义" },
+        "notThis": { "type": "string" },
+        "introForBeginners": { "type": "string" },
+        "frameworkTree": {
+          "type": "array",
+          "description": "来自 02-skeleton 的理论树",
+          "items": { "$ref": "#/definitions/treeNode" }
+        },
+        "skeletonPillars": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "claim": { "type": "string" },
+              "confidence": { "type": "string" },
+              "source": { "type": "string" },
+              "graphNodeIds": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "pillars": { "type": "array", "description": "精读支柱（Osborne 等）" },
+        "decisionGuide": { "type": "array" },
+        "learningTracks": { "type": "array" },
+        "workedExample": { "type": "object" },
+        "classicModels": { "type": "array" },
+        "coreClaims": { "type": "array", "items": { "type": "string" } },
+        "quickStartSteps": { "type": "array", "items": { "type": "string" } },
+        "marketComparison": {
+          "type": "object",
+          "description": "B5 中国对齐 / 勿误用对照",
+          "properties": {
+            "title": { "type": "string" },
+            "intro": { "type": "string" },
+            "rows": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "dimension": { "type": "string" },
+                  "na": { "type": "string" },
+                  "china": { "type": "string" },
+                  "graphNodeIds": { "type": "array", "items": { "type": "string" } }
+                }
+              }
+            },
+            "portable": { "type": "array", "items": { "type": "string" } },
+            "notPortable": { "type": "array", "items": { "type": "string" } },
+            "otaCallout": { "type": "string" }
+          }
+        }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "type"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "type": { "type": "string" },
+          "group": { "type": "string" },
+          "confidence": { "type": "string" },
+          "explain": { "type": "string", "description": "图谱点击必填" },
+          "example": { "type": "string" },
+          "analogy": { "type": "string" },
+          "sources": { "type": "array" },
+          "context": { "type": "array" }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "target", "type"],
+        "properties": {
+          "source": { "type": "string" },
+          "target": { "type": "string" },
+          "type": { "type": "string" },
+          "label": { "type": "string" },
+          "explain": { "type": "string", "description": "图谱连线点击必填" },
+          "confidence": { "type": "string" }
+        }
+      }
+    },
+    "controversies": { "type": "array" },
+    "readingPath": { "type": "array" },
+    "glossary": { "type": "array" },
+    "misconceptions": { "type": "array" },
+    "existingKnowledgeLinks": { "type": "array" }
+  },
+  "definitions": {
+    "treeNode": {
+      "type": "object",
+      "properties": {
+        "label": { "type": "string" },
+        "nodeId": { "type": "string" },
+        "children": { "type": "array", "items": { "$ref": "#/definitions/treeNode" } }
+      }
+    }
+  }
+}

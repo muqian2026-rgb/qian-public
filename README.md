@@ -1,5 +1,59 @@
 # qian-public
 
-公开仓库占位。仅放可对外分享的内容（作品集、开源工具、可公开 learn 图谱等）。
+> **唯一公开仓库** · 作品集 + 可 fork 的 Agent Skill + 精选知识图谱 demo  
+> 作者：[muqian2026-rgb](https://github.com/muqian2026-rgb)
 
-业务与个人私密内容请见私有仓库。
+---
+
+## 这里有什么
+
+| 路径 | 是什么 | 适合谁 |
+|------|--------|--------|
+| [book-learn-distill/](./book-learn-distill/) | 读书 → Domain Skill + 知识图谱 HTML 的 11 阶段流水线 | 用 Cursor / Claude Code 做「学一门课」的人 |
+| [examples/](./examples/) | 流水线产出示例（可离线打开的 HTML） | 想看最终长什么样的人 |
+
+私有工作区（滴滴 / fitwow / 个人蒸馏）不对外公开。
+
+---
+
+## 快速开始 · book-learn-distill
+
+```bash
+git clone https://github.com/muqian2026-rgb/qian-public.git
+cp -r qian-public/book-learn-distill ~/.cursor/skills/book-learn-distill
+# Claude Code 用户：~/.claude/skills/book-learn-distill
+```
+
+在 Cursor 里说：
+
+```
+学一下 行为经济学
+```
+
+Agent 按 Skill 内 8–11 阶段流水线执行，产出 Domain Skill + 知识图谱 HTML。
+
+详见 [book-learn-distill/README.md](./book-learn-distill/README.md)。
+
+---
+
+## 示例预览
+
+打开 [examples/yujun-product-methodology_知识图谱.html](./examples/yujun-product-methodology_知识图谱.html)（浏览器本地打开即可，单文件离线可看）。
+
+---
+
+## Star 这个仓库，如果你
+
+- 想把「读书」变成可复用的 Cursor Skill
+- 需要知识图谱 HTML 的模板与脚本
+- 在做 AI 学习 / 蒸馏工作流
+
+---
+
+## 反馈
+
+[GitHub Issues](https://github.com/muqian2026-rgb/qian-public/issues)
+
+---
+
+*Last updated: 2026-06-08*

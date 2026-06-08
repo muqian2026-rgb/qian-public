@@ -81,9 +81,9 @@ book-learn-distill/
 
 ## 产出示例
 
-公开库仅提供**结构示例**（合成数据，不含图书原文）：
+公开库为**集合页**，仅提供 Skill 源码。集合预览（英文示意）：
 
-**[在线 Demo →](https://muqian2026-rgb.github.io/qian-public/demo/pipeline-structure-demo.html)**
+**[Collection preview →](https://muqian2026-rgb.github.io/qian-public/demo/collection-preview.html)**
 
 完整书目产出（书摘、路径阅读、书内问答）在私有学习库生成，不公开发布，尊重原著版权。
 

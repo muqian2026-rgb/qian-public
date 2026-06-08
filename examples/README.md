@@ -1,20 +1,18 @@
-# 示例说明
+# Examples
 
-本目录**不存放完整书目知识图谱**（含书摘、原文摘录），避免版权风险。
+This directory does **not** host full book knowledge graphs (excerpts, path-reading content) — copyright stays in the private learning repo.
 
-## 公开 Demo
+## Collection preview
 
-在线结构示例（合成数据，可交互）：
+English schematic of what `qian-public` contains:
 
-**https://muqian2026-rgb.github.io/qian-public/demo/pipeline-structure-demo.html**
+**https://muqian2026-rgb.github.io/qian-public/demo/collection-preview.html**
 
-展示：UI 布局、图谱交互形态、流水线阶段关系。
+## Full outputs
 
-## 完整产出
-
-使用 `book-learn-distill` Skill 在私有库自行生成，包含：
+Run `book-learn-distill` in your **private** workspace to generate:
 
 - Domain Skill
-- 单文件知识图谱 HTML（含路径阅读、书内问答等完整区块）
+- Single-file knowledge-graph HTML (path reading, in-book Q&A, etc.)
 
-完整版不公开发布。
+Not published in this open repo.

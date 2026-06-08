@@ -1,11 +1,11 @@
 # qian-public
 
-> **唯一公开仓库** · book-learn-distill + Cursor Skills 工具箱  
-> 作者：[muqian2026-rgb](https://github.com/muqian2026-rgb)
+> **Open collection** · book-learn-distill + Cursor Skills toolbox  
+> by [muqian2026-rgb](https://github.com/muqian2026-rgb)
 
-[![结构示例](docs/assets/pipeline-structure-demo.png)](https://muqian2026-rgb.github.io/qian-public/demo/pipeline-structure-demo.html)
+[![Collection preview](docs/assets/collection-preview.png)](https://muqian2026-rgb.github.io/qian-public/demo/collection-preview.html)
 
-↑ 点击预览 **[结构示例 →](https://muqian2026-rgb.github.io/qian-public/demo/pipeline-structure-demo.html)**（合成数据，不含图书原文）
+↑ **[Collection preview →](https://muqian2026-rgb.github.io/qian-public/demo/collection-preview.html)** (English · schematic only)
 
 ---
 

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>domain-learn · 结构示例 Demo</title>
+  <style>
+    :root { --bg:#0f1419; --card:#1a2332; --text:#e8eaed; --muted:#9aa0a6; --border:#2d3748; --primary:#4fc3f7; --accent:#81c784; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+    .header { background:linear-gradient(135deg,#0d1b2a,#1b4332 50%,#2d6a4f); padding:28px 20px; }
+    .header .inner { max-width:960px; margin:0 auto; }
+    .badge { font-size:11px; background:rgba(255,255,255,.12); padding:4px 10px; border-radius:20px; display:inline-block; margin-bottom:8px; }
+    .banner { background:#1a2e1a; border-bottom:1px solid #2d5a2d; padding:10px 20px; font-size:13px; color:#a5d6a7; text-align:center; }
+    .layout { max-width:960px; margin:0 auto; padding:20px 16px 48px; }
+    .panel { background:var(--card); border-radius:12px; padding:20px; border:1px solid var(--border); margin-bottom:16px; }
+    .panel h2 { font-size:17px; margin-bottom:12px; padding-bottom:8px; border-bottom:2px solid rgba(79,195,247,.25); color:var(--primary); }
+    .muted { color:var(--muted); font-size:13px; }
+    .timeline { display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+    .era { border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+    .era-head { padding:12px 16px; background:rgba(79,195,247,.08); cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+    .era-head:hover { background:rgba(79,195,247,.14); }
+    .era-body { padding:12px 16px; font-size:14px; display:none; border-top:1px solid var(--border); }
+    .era.open .era-body { display:block; }
+    .tag { font-size:11px; padding:2px 8px; border-radius:12px; background:rgba(129,199,132,.15); color:var(--accent); }
+    .locked { background:rgba(0,0,0,.2); border:1px dashed var(--border); border-radius:8px; padding:16px; text-align:center; color:var(--muted); font-size:13px; }
+    a { color:#64b5f6; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="inner">
+      <span class="badge">Structure Demo · 合成数据</span>
+      <h1>domain-learn 时间机器 · 结构示例</h1>
+      <p style="opacity:.85;font-size:14px;margin-top:6px">展示年表/叙事手风琴 UI 形态；完整深读原文保留在私有学习库。</p>
+    </div>
+  </header>
+  <div class="banner">🕐 公开示例 · 合成演示节点 · 不含真实深读摘录</div>
+  <main class="layout">
+    <section class="panel">
+      <h2>愿景</h2>
+      <p><strong>方向：</strong>某学科/行业的时间轴学习（示例：行业演进三阶段）</p>
+      <p class="muted" style="margin-top:8px">framework: industry-timeline · 无单一权威教材</p>
+    </section>
+    <section class="panel">
+      <h2>时间轴叙事（合成）</h2>
+      <p class="muted">点击展开。真实项目替换为你的年表节点与 enrichment 数据。</p>
+      <div class="timeline">
+        <div class="era open">
+          <div class="era-head" onclick="this.parentElement.classList.toggle('open')">
+            <span><strong>阶段一</strong> · 萌芽期 <span class="tag">约 2010–2015</span></span>
+            <span class="muted">▼</span>
+          </div>
+          <div class="era-body">市场教育、产品形态探索、用户习惯养成。（合成示例文案）</div>
+        </div>
+        <div class="era">
+          <div class="era-head" onclick="this.parentElement.classList.toggle('open')">
+            <span><strong>阶段二</strong> · 增长期 <span class="tag">约 2015–2020</span></span>
+            <span class="muted">▼</span>
+          </div>
+          <div class="era-body">规模化、竞争加剧、商业模式验证。（合成示例文案）</div>
+        </div>
+        <div class="era">
+          <div class="era-head" onclick="this.parentElement.classList.toggle('open')">
+            <span><strong>阶段三</strong> · 成熟期 <span class="tag">约 2020–今</span></span>
+            <span class="muted">▼</span>
+          </div>
+          <div class="era-body">效率竞争、细分赛道、AI 赋能。（合成示例文案）</div>
+        </div>
+      </div>
+    </section>
+    <section class="panel">
+      <h2>深读节点</h2>
+      <div class="locked">🔒 完整版含关键节点 Markdown 深读，不公开发布 · 请在私有库使用 domain-learn 自行生成</div>
+    </section>
+    <section class="panel">
+      <h2>叙事视频（可选）</h2>
+      <div class="locked">🔒 完整版含 AI 生成叙事视频，不公开发布</div>
+    </section>
+    <p class="muted" style="text-align:center;margin-top:8px">
+      <a href="https://github.com/muqian2026-rgb/qian-public/tree/main/domain-learn">安装 domain-learn →</a>
+      ·
+      <a href="pipeline-structure-demo.html">book 管线示例 →</a>
+    </p>
+  </main>
+</body>
+</html>

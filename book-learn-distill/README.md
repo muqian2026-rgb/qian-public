@@ -81,7 +81,11 @@ book-learn-distill/
 
 ## 产出示例
 
-见上级目录 [examples/](../examples/) — 俞军产品方法论知识图谱（1.2MB 单文件 HTML）。
+公开库仅提供**结构示例**（合成数据，不含图书原文）：
+
+**[在线 Demo →](https://muqian2026-rgb.github.io/qian-public/demo/pipeline-structure-demo.html)**
+
+完整书目产出（书摘、路径阅读、书内问答）在私有学习库生成，不公开发布，尊重原著版权。
 
 ---
 

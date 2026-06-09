@@ -29,7 +29,6 @@ Workflow doc: [issue-prd-architecture-workflow](../docs/issue-prd-architecture-w
 
 | Skill | Use |
 |-------|-----|
-| [html-public-publish](./html-public-publish/) | Static HTML → public URL (Surge) |
 | [docling-ingest](./docling-ingest/) | PDF/DOCX → Markdown |
 
 Main pipeline: [book-learn-distill](../book-learn-distill/)

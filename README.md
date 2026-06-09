@@ -14,7 +14,7 @@
 | 路径 | 是什么 |
 |------|--------|
 | [book-learn-distill/](./book-learn-distill/) | 读书 → Skill + 知识图谱 |
-| [skills/](./skills/) | PM 门禁、调研分析、Skill 工厂、工具链（10 个） |
+| [skills/](./skills/) | PM 门禁、调研分析、Skill 工厂、工具链（8 个） |
 | [docs/issue-prd-architecture-workflow.md](./docs/issue-prd-architecture-workflow.md) | Issue · PRD · 架构 端到端流程 |
 
 **不公开**：书目全文、深读原文、公司内部数据——保留在私有学习库。
@@ -51,7 +51,6 @@ issue ready check
 | sanceng-simian | 三层四面拆一下这个市场 |
 | skill-activation-test | run skill activation test for … |
 | diagnose-apply-split | split diagnose apply for … |
-| html-public-publish | 把这个 HTML 发到公网 |
 | docling-ingest | docling 转一下这个 PDF |
 
 详见 [skills/README.md](./skills/README.md)。

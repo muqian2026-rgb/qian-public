@@ -42,7 +42,7 @@ python3 skills/docling-ingest/scripts/docling_convert.py --file "/path/to/file.p
 1. **必须先有明确文件路径**；不得猜测仓库内任意 PDF。
 2. 输出写入 **`knowledge-base/raw/`**，文件名建议 `YYYY-MM-DD-<主题>.md`。
 3. **不**假装「已精读」——转换后仍须 ingest 或人工扫一眼表格/数字。
-4. 含 **客户隐私、未脱敏合同** → 仅本地 raw，**禁止** `html-public-publish`。
+4. 含 **客户隐私、未脱敏合同** → 仅本地 raw，**禁止** 上传公网。
 
 ## 与「不擅长」的边界
 

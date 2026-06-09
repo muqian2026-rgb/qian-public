@@ -14,7 +14,8 @@
 | 路径 | 是什么 |
 |------|--------|
 | [book-learn-distill/](./book-learn-distill/) | 读书 → Skill + 知识图谱 |
-| [skills/](./skills/) | 竞品分析、三层四面、HTML 发布、Docling 入库 |
+| [skills/](./skills/) | PM 门禁、调研分析、Skill 工厂、工具链（10 个） |
+| [docs/issue-prd-architecture-workflow.md](./docs/issue-prd-architecture-workflow.md) | Issue · PRD · 架构 端到端流程 |
 
 **不公开**：书目全文、深读原文、公司内部数据——保留在私有学习库。
 
@@ -25,12 +26,15 @@
 ```bash
 git clone https://github.com/muqian2026-rgb/qian-public.git
 cp -r qian-public/book-learn-distill ~/.cursor/skills/book-learn-distill
+cp -r qian-public/skills/prd-review-gate ~/.cursor/skills/prd-review-gate
 ```
 
 在 Cursor 里说：
 
 ```
 学一下 行为经济学
+PRD review this spec
+issue ready check
 ```
 
 完整产出在**你的私有库**生成；本仓库提供 Skill 源码。
@@ -41,8 +45,12 @@ cp -r qian-public/book-learn-distill ~/.cursor/skills/book-learn-distill
 
 | Skill | 口令示例 |
 |-------|----------|
+| prd-review-gate | PRD review / review this PRD |
+| issue-ready-checklist | issue ready / ready for dev |
 | competitive-analyst | 调研 XX 赛道竞品 |
 | sanceng-simian | 三层四面拆一下这个市场 |
+| skill-activation-test | run skill activation test for … |
+| diagnose-apply-split | split diagnose apply for … |
 | html-public-publish | 把这个 HTML 发到公网 |
 | docling-ingest | docling 转一下这个 PDF |
 
@@ -53,8 +61,8 @@ cp -r qian-public/book-learn-distill ~/.cursor/skills/book-learn-distill
 ## Star 这个仓库，如果你
 
 - 想把「读书」变成可复用的 Cursor Skill
-- 需要知识图谱 HTML 的模板与构建脚本
-- 在做 AI 学习 / 蒸馏 / PM 分析工作流
+- 需要 PRD / Issue Ready 门禁或竞品分析模板
+- 在做 AI 学习 / 蒸馏 / PM 产研工作流
 
 ---
 

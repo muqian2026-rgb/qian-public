@@ -1,12 +1,35 @@
-# Cursor Skills 工具箱
+# Cursor Skills toolbox
 
-从私有工作流复制的公开发布副本。安装到 `~/.cursor/skills/` 即可使用。
+Public copies from private workflows. Install to `~/.cursor/skills/` or use `npx skills add muqian2026-rgb/qian-public`.
 
-| Skill | 用途 |
-|-------|------|
-| [competitive-analyst](./competitive-analyst/) | App 竞品调研报告 + 界面对比 HTML |
-| [sanceng-simian](./sanceng-simian/) | 美团三层四面商业分析 |
-| [html-public-publish](./html-public-publish/) | 单页 HTML 发布到 Surge 公网 |
-| [docling-ingest](./docling-ingest/) | PDF/DOCX → Markdown 入库 |
+## PM / product-dev
 
-主学习流水线：[book-learn-distill](../book-learn-distill/)
+| Skill | Use |
+|-------|-----|
+| [prd-review-gate](./prd-review-gate/) | PRD 95% completeness gate before dev |
+| [issue-ready-checklist](./issue-ready-checklist/) | Definition of Ready for GitHub Issues |
+
+Workflow doc: [issue-prd-architecture-workflow](../docs/issue-prd-architecture-workflow.md)
+
+## Research & analysis
+
+| Skill | Use |
+|-------|-----|
+| [competitive-analyst](./competitive-analyst/) | Competitor report + UI comparison HTML |
+| [sanceng-simian](./sanceng-simian/) | Market sizing (3 layers) + revenue (4 sides) |
+
+## Skill factory (pairs with book-learn-distill)
+
+| Skill | Use |
+|-------|-----|
+| [skill-activation-test](./skill-activation-test/) | Test if your Skill triggers correctly |
+| [diagnose-apply-split](./diagnose-apply-split/) | Split methodology into diagnose + apply Skills |
+
+## Devtools
+
+| Skill | Use |
+|-------|-----|
+| [html-public-publish](./html-public-publish/) | Static HTML → public URL (Surge) |
+| [docling-ingest](./docling-ingest/) | PDF/DOCX → Markdown |
+
+Main pipeline: [book-learn-distill](../book-learn-distill/)

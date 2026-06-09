@@ -1,5 +1,7 @@
 # qian-public
 
+> **为什么 fork？** 把书蒸馏成 Cursor Skill，用 PRD / Issue Ready 门禁跑产研——一套可复制的 PM + AI 工作流，fork 即用，产出留在你的私有库。
+
 > **Open collection** · book-learn-distill + Cursor Skills toolbox  
 > by [muqian2026-rgb](https://github.com/muqian2026-rgb)
 
@@ -71,4 +73,4 @@ issue ready check
 
 ---
 
-*Last updated: 2026-06-08*
+*Last updated: 2026-06-09*

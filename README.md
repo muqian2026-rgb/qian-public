@@ -18,6 +18,7 @@
 | [book-learn-distill/](./book-learn-distill/) | 读书 → Skill + 知识图谱 |
 | [skills/](./skills/) | PM 门禁、调研分析、Skill 工厂、工具链（8 个） |
 | [docs/issue-prd-architecture-workflow.md](./docs/issue-prd-architecture-workflow.md) | Issue · PRD · 架构 端到端流程 |
+| [docs/xiaozhi-esp32-private-deployment.md](./docs/xiaozhi-esp32-private-deployment.md) | **ESP32 小智私有化部署实录**（架构 · 路径 · 踩坑） |
 
 **不公开**：书目全文、深读原文、公司内部数据——保留在私有学习库。
 
@@ -73,4 +74,4 @@ issue ready check
 
 ---
 
-*Last updated: 2026-06-09*
+*Last updated: 2026-06-25*

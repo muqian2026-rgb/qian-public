@@ -251,7 +251,7 @@ function renderScholarExtras(ch) {
   const refs = (ch.bookSections || []).map((r) => `Foote ${esc(r)}`).join(" · ");
   return `<details class="course-scholar"><summary>学者延伸</summary>
     <p>教材对照：${refs || "—"}</p>
-    <p class="muted">L2：配合 K 区检索原始段落与统计方法讨论。</p>
+    <p class="muted">配合「书内问答」检索原始段落与统计方法讨论。</p>
   </details>`;
 }
 

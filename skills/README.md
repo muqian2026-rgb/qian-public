@@ -31,4 +31,4 @@ Workflow doc: [issue-prd-architecture-workflow](../docs/issue-prd-architecture-w
 |-------|-----|
 | [docling-ingest](./docling-ingest/) | PDF/DOCX → Markdown |
 
-Main pipeline: [book-learn-distill](../book-learn-distill/)
+Main pipelines: [book-learn-distill](../book-learn-distill/)（v1.0 概述）· [book-abridged-edition](../book-abridged-edition/)（v2.0 简读）

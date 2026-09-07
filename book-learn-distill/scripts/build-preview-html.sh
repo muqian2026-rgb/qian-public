@@ -1,13 +1,31 @@
 #!/usr/bin/env bash
-# Build 作业输出/<slug>_知识图谱.html (split delivery: small HTML + external index + app JS)
+# Build 图书馆/<分类>/<slug>/网页成品/<slug>_知识图谱.html.
 # Optional: BUNDLE=1 for single-file (large, editors may fail to open)
 set -euo pipefail
 SLUG="${1:?usage: build-preview-html.sh <slug>}"
 BUNDLE="${BUNDLE:-0}"
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-LEARN="$ROOT/learn/$SLUG"
-OUT_DIR="$ROOT/作业输出"
+LIBRARY_ROOT="${BOOK_LIBRARY_ROOT:-图书馆}"
+CATALOG="$LIBRARY_ROOT/catalog.json"
+BOOK_REL="$(python3 - "$CATALOG" "$SLUG" <<'PY'
+import json, sys
+from pathlib import Path
+catalog = Path(sys.argv[1])
+slug = sys.argv[2]
+if catalog.is_file():
+    for book in json.loads(catalog.read_text(encoding="utf-8")).get("books", []):
+        if book.get("slug") == slug:
+            print(book["path"])
+            break
+PY
+)"
+if [[ -z "$BOOK_REL" ]]; then
+  echo "Book not found in $CATALOG: $SLUG" >&2
+  exit 1
+fi
+LEARN="$PROJECTS/$BOOK_REL"
+OUT_DIR="$LEARN/网页成品"
 OUT="$OUT_DIR/${SLUG}_知识图谱.html"
 JSON="$LEARN/06-graph-data.json"
 INDEX="$LEARN/book-index.json"
@@ -15,9 +33,11 @@ TPL="$ROOT/skills/book-learn-distill/templates/knowledge-graph.html"
 JS_MAIN="$ROOT/skills/book-learn-distill/templates/knowledge-graph.js"
 JS_SCIENCE="$ROOT/skills/book-learn-distill/templates/knowledge-graph-science.js"
 JS_COURSE="$ROOT/skills/book-learn-distill/templates/knowledge-graph-course.js"
+JS_CHAT="$ROOT/skills/book-learn-distill/templates/book-persona-chat.js"
 JS_APP="$OUT_DIR/${SLUG}_app.js"
 JS_INDEX="$OUT_DIR/${SLUG}_book-index.js"
 ASSETS_OUT="$OUT_DIR/${SLUG}_assets"
+mkdir -p "$OUT_DIR"
 # paleontology legacy folder name
 [[ "$SLUG" == "paleontology" ]] && ASSETS_OUT="$OUT_DIR/paleontology_assets"
 
@@ -28,6 +48,9 @@ if [[ -f "$JS_COURSE" ]]; then
   cat "$JS_MAIN" "$JS_SCIENCE" "$JS_COURSE" > "$JS_APP"
 else
   cat "$JS_MAIN" "$JS_SCIENCE" > "$JS_APP"
+fi
+if [[ -f "$JS_CHAT" ]]; then
+  cat "$JS_CHAT" >> "$JS_APP"
 fi
 cp "$JS_APP" "$LEARN/knowledge-graph.js"
 echo "App JS -> ${JS_APP} ($(wc -c < "$JS_APP" | tr -d ' ') bytes)"
@@ -133,7 +156,15 @@ Path(out_path).write_text(out, encoding="utf-8")
 print(f"Wrote {out_path} ({Path(out_path).stat().st_size:,} bytes)")
 PY
 
-# 4) Copy assets
+# 4) Local D3 (avoid CDN hang)
+D3_SRC="$LEARN/d3.v7.min.js"
+[[ -f "$D3_SRC" ]] || D3_SRC="$ROOT/publish/知识图谱/d3.v7.min.js"
+if [[ -f "$D3_SRC" && "$D3_SRC" != "$LEARN/d3.v7.min.js" ]]; then
+  cp "$D3_SRC" "$LEARN/d3.v7.min.js"
+  echo "Synced D3 -> ${LEARN}/d3.v7.min.js"
+fi
+
+# 5) Copy assets
 if [[ -d "$LEARN/assets" ]]; then
   rm -rf "$ASSETS_OUT"
   cp -R "$LEARN/assets" "$ASSETS_OUT"
@@ -157,9 +188,11 @@ cat > "$README" << EOF
   - ${SLUG}_assets/ 或 paleontology_assets/  （简笔画等资源，若有）
 
 若页面一直显示「正在加载」或空白：
-  1. 确认上面几个文件都在同一目录
-  2. 需要联网加载 D3 与 Wikimedia 课程配图
-  3. 勿用 Cursor 内置预览打开 3MB+ 单文件；用系统浏览器
+  1. 确认上面几个文件都在同一目录（含 d3.v7.min.js）
+  2. 不要用 Cursor 内置预览打开；用系统浏览器，或本目录起本地服务：
+       python3 -m http.server 8765
+       再打开 http://127.0.0.1:8765/${SLUG}_知识图谱.html
+  3. 勿用 Cursor 内置预览打开 3MB+ 单文件
 
 重新生成：bash skills/book-learn-distill/scripts/build-preview-html.sh ${SLUG}
 EOF
@@ -172,7 +205,7 @@ sed -e "s|${SLUG}_book-index.js|book-index.js|g" \
     -e "s|${SLUG}_app.js|knowledge-graph.js|g" \
     "$OUT" > "$LEARN/knowledge-graph.html"
 
-echo "Synced -> learn/${SLUG}/ (book-index.js + knowledge-graph.js)"
+echo "Synced -> ${LEARN}/ (book-index.js + knowledge-graph.js)"
 
 echo ""
 echo "=== QA gate ==="

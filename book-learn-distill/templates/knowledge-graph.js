@@ -4,7 +4,6 @@ const SECTIONS = [
   ["graph", "C 图谱"],
   ["reading-path", "E 路径阅读"],
   ["book-qa", "K 书内问答"],
-  ["existing", "G 已有"],
   ["skill-bridge", "H 应用"],
   ["misconceptions", "I 误区"],
   ["glossary", "J 术语"],
@@ -259,15 +258,34 @@ function sectionReaderId(sectionRef) {
   );
 }
 
+const CN_CHAP_NUM = { 一: "1", 二: "2", 三: "3", 四: "4", 五: "5", 六: "6", 七: "7", 八: "8", 九: "9", 十: "10" };
+
+function normalizeSectionKey(sectionRef) {
+  const noSec = String(sectionRef || "").replace(/^§/, "").trim();
+  if (!noSec) return "";
+  const cn = noSec.match(/第\s*([0-9]+|[一二三四五六七八九十]+)\s*章/);
+  if (cn) return CN_CHAP_NUM[cn[1]] || cn[1];
+  if (/^引言/.test(noSec)) return "0";
+  if (/^(前言|序言)$/.test(noSec) || noSec === "序") return "P";
+  if (/^导读/.test(noSec)) return "G";
+  const ap = noSec.match(/^附录\s*([一二12])?/);
+  if (ap) {
+    const n = { 一: "1", 二: "2", 1: "1", 2: "2" }[ap[1]] || "";
+    return "A" + n;
+  }
+  if (/^(要义|速成)$/.test(noSec)) return "";
+  return noSec;
+}
+
 function chunksForSection(sectionRef) {
   if (!BOOK_INDEX || !BOOK_INDEX.chunks) return [];
-  const ref = (sectionRef || "").replace(/^§/, "").trim();
+  const ref = normalizeSectionKey(sectionRef);
   if (!ref) return [];
   const isChapter = !ref.includes(".");
   return BOOK_INDEX.chunks
     .filter((c) => {
-      const sr = (c.sectionRef || "").replace(/^§/, "");
-      if (sr === ref || sr.startsWith(ref + ".")) return true;
+      const sr = normalizeSectionKey(c.sectionRef || "");
+      if (sr === ref || (sr && sr.startsWith(ref + "."))) return true;
       if (isChapter && String(c.chapterNum) === ref) return true;
       if (isChapter && new RegExp(`第\\s*${ref}\\s*章`).test(c.chapter || "")) return true;
       if (!isChapter) {
@@ -281,10 +299,17 @@ function chunksForSection(sectionRef) {
 
 function loadSectionReader(sectionRef, container) {
   if (!container) return;
+  const rawRef = String(sectionRef || "").trim();
+  if (/要义|速成/.test(rawRef)) {
+    container.innerHTML =
+      '<p class="muted">「要义」是整理稿，不是原书一节。请点节点上的「书内检索」，或到「路径阅读」从引言/第1章读原文。</p>';
+    container.classList.remove("hidden");
+    return;
+  }
   const chunks = chunksForSection(sectionRef);
   if (!chunks.length) {
     container.innerHTML =
-      '<p class="muted">未匹配到该节正文。可点「书内检索」或到 K 区搜索关键词。</p>';
+      '<p class="muted">未匹配到该节正文。可点「书内检索」或到「书内问答」搜索关键词。</p>';
     container.classList.remove("hidden");
     return;
   }
@@ -319,6 +344,7 @@ function bindReadSectionButtons(root) {
 }
 
 function searchBookChunks(query, limit = 8) {
+  window.searchBookChunks = searchBookChunks;
   if (!BOOK_INDEX || !BOOK_INDEX.chunks) return [];
   const baseTerms = tokenizeQuery(query);
   const allTerms = expandQueryTerms(query);
@@ -404,12 +430,12 @@ function renderPersonaCard(query, model) {
     .join("");
   return `<div class="qa-card persona-card">
     <div class="persona-head">
-      <div class="persona-avatar">俞</div>
+      <div class="persona-avatar">${esc((PERSONA.persona.name || "?").slice(0, 1))}</div>
       <div class="persona-meta">
         <div class="persona-name">
           ${esc(PERSONA.persona.name)}
           <span class="persona-model-tag">${esc(model.title)}</span>
-          <span class="persona-ai-tag" title="本回答由 AI 基于公开方法论模拟，不代表俞军本人立场">AI 模拟 · 非俞军本人</span>
+          <span class="persona-ai-tag" title="本回答由 AI 基于书内方法论模拟，不代表作者本人立场">AI 模拟 · 非本人</span>
         </div>
         <div class="persona-tagline">${esc(PERSONA.persona.tagline)}</div>
       </div>
@@ -417,7 +443,7 @@ function renderPersonaCard(query, model) {
     <div class="persona-body">
       <p class="persona-core">${fmt(model.core)}</p>
       ${callout}
-      ${questions ? `<div class="persona-qblock"><div class="persona-qhead">俞老师会先反问你</div><ol class="persona-qlist">${questions}</ol></div>` : ""}
+      ${questions ? `<div class="persona-qblock"><div class="persona-qhead">${esc(PERSONA.persona.name)}会先反问你</div><ol class="persona-qlist">${questions}</ol></div>` : ""}
       ${refsBtn ? `<div class="persona-refs"><span class="muted">在书内对应章节：</span>${refsBtn}</div>` : ""}
     </div>
   </div>`;
@@ -459,7 +485,7 @@ function renderBookAnswer(query, hits) {
   } else {
     return `<div class="qa-empty">
       <p>没找到与 <strong>「${esc(query)}」</strong> 直接相关的段落。</p>
-      <p class="muted">可以试试：用户价值公式、好产品、交易成本、用户模型、PM 选拔。</p>
+      <p class="muted">可以试试：${((PERSONA && PERSONA.qaSamples) || ["存量", "政策阻力", "杠杆点"]).slice(0, 5).join("、")}</p>
     </div>`;
   }
 
@@ -470,7 +496,7 @@ function renderBookAnswer(query, hits) {
     h += `<div class="qa-refs">
       <div class="qa-refs-head">
         <span class="qa-refs-title">书中原文 · 巩固阅读</span>
-        <span class="muted">${model ? "俞老师指向这几段" : "按相关度"} · 共 ${BOOK_INDEX.meta?.chunkCount || "?"} 段索引</span>
+        <span class="muted">${model ? `${esc(PERSONA.persona.name)}指向这几段` : "按相关度"} · 共 ${BOOK_INDEX.meta?.chunkCount || "?"} 段索引</span>
       </div>`;
     top.forEach(({ chunk, score }, i) => {
       const excerpt = chunk.text.slice(0, 480).replace(/\s+/g, " ");
@@ -499,6 +525,10 @@ function bindBookSearchTriggers(root) {
       const q = btn.dataset.query || "";
       document.getElementById("book-qa").scrollIntoView({ behavior: "smooth" });
       const input = document.getElementById("bookQaInput");
+      if (window.BOOK_PERSONA_CHAT && document.getElementById("bkChatWrap")) {
+        window.BOOK_PERSONA_CHAT.send(q);
+        return;
+      }
       if (input) {
         input.value = q;
         runBookSearch(q);
@@ -547,36 +577,47 @@ function runBookSearch(query) {
 function renderBookQA() {
   const panel = document.getElementById("bookQaPanel");
   if (!panel) return;
+  if (PERSONA && PERSONA.models && PERSONA.models.length && window.BOOK_PERSONA_CHAT) {
+    const sub = document.querySelector("#book-qa h2 .panel-sub");
+    if (sub) sub.textContent = "千问对话 · 先答案，后引用原文";
+    if (document.getElementById("bkChatWrap")) return;
+    window.BOOK_PERSONA_CHAT.render(panel);
+    return;
+  }
   const count = BOOK_INDEX && BOOK_INDEX.meta ? BOOK_INDEX.meta.chunkCount : 0;
   const loaded = BOOK_INDEX && BOOK_INDEX.chunks && BOOK_INDEX.chunks.length > 0;
   const hasPersona = !!(PERSONA && PERSONA.models && PERSONA.models.length);
+  const who = (hasPersona && PERSONA.persona && PERSONA.persona.name) || "";
   const hint = hasPersona
-    ? `用自然语言问俞老师 · 命中核心模型则用俞老师视角回答 + 推荐章节巩固。`
+    ? `用自然语言问${who} · 命中核心模型则用作者视角回答 + 推荐章节巩固。`
     : "输入关键词在全书检索。";
-  const samples = hasPersona
-    ? [
-        "什么是好产品？",
-        "用户价值怎么算？",
-        "怎么降低交易成本？",
-        "PM 该怎么选？",
-        "数据涨了就是产品做对了吗？",
-      ]
-    : (DATA.theory && DATA.theory.bookQaSamples) ||
-      (typeof isScienceProfile === "function" && isScienceProfile()
-        ? [
-            "fossil record completeness",
-            "mass extinction",
-            "evolutionary stasis",
-            "taphonomy",
-            "Cambrian explosion",
-          ]
-        : ["用户价值公式", "交易模型", "交易成本", "组织效率"]);
+  const yujunFallback = [
+    "什么是好产品？",
+    "用户价值怎么算？",
+    "怎么降低交易成本？",
+    "PM 该怎么选？",
+    "数据涨了就是产品做对了吗？",
+  ];
+  const samples =
+    (hasPersona && PERSONA.qaSamples && PERSONA.qaSamples.length && PERSONA.qaSamples) ||
+    (DATA.theory && DATA.theory.bookQaSamples) ||
+    (hasPersona && who.indexOf("俞") === 0 ? yujunFallback : null) ||
+    (typeof isScienceProfile === "function" && isScienceProfile()
+      ? [
+          "fossil record completeness",
+          "mass extinction",
+          "evolutionary stasis",
+          "taphonomy",
+          "Cambrian explosion",
+        ]
+      : ["用户价值公式", "交易模型", "交易成本", "组织效率"]);
+  const sample0 = samples[0] || "输入问题";
   panel.innerHTML = `
     <div class="qa-form">
-      <input type="search" id="bookQaInput" placeholder="${hasPersona ? "问俞老师：什么是好产品？为什么数据好不等于价值好？" : "问个问题或输入关键词"}" />
-      <button type="button" id="bookQaBtn">${hasPersona ? "问俞老师" : "询问"}</button>
+      <input type="search" id="bookQaInput" placeholder="${hasPersona ? `问${esc(who)}：${esc(sample0)}` : "问个问题或输入关键词"}" />
+      <button type="button" id="bookQaBtn">${hasPersona ? `问${esc(who)}` : "询问"}</button>
     </div>
-    <p class="qa-meta muted">${esc(hint)}${loaded ? ` 已索引 <strong>${count}</strong> 段书内原文${hasPersona ? `，俞老师 ${PERSONA.models.length} 个核心模型` : ""}。` : " <strong style='color:#ff4d4f'>索引未加载</strong>。"}</p>
+    <p class="qa-meta muted">${esc(hint)}${loaded ? ` 已索引 <strong>${count}</strong> 段书内原文${hasPersona ? `，${esc(who)} ${PERSONA.models.length} 个核心模型` : ""}。` : " <strong style='color:#ff4d4f'>索引未加载</strong>。"}</p>
     <div class="qa-suggest"><span class="muted">试试：</span>${samples
       .map(
         (s) =>
@@ -645,12 +686,31 @@ function renderNav() {
     .join("");
 }
 
+function renderEssenceHtml(t) {
+  const e = t && t.essence;
+  if (!e) return "";
+  if (typeof e === "string") {
+    return `<div class="essence">${renderCoreBlocks(e)}</div>`;
+  }
+  const rows = [
+    ["这是一本什么书", e.what],
+    ["核心逻辑", e.logic],
+    ["带走什么", e.take],
+  ].filter(([, v]) => v);
+  if (!rows.length) return "";
+  return `<div class="essence">${rows
+    .map(([k, v]) => `<p><strong>${esc(k)}</strong>　${esc(v)}</p>`)
+    .join("")}</div>`;
+}
+
 function renderOverview() {
   const m = DATA.meta;
   const t = DATA.theory;
   document.title = m.title + " · 知识图谱";
   document.getElementById("hdrTitle").textContent = m.title;
   document.getElementById("hdrDef").textContent = t.oneLiner || t.definition || "";
+  const ess = document.getElementById("overviewEssence");
+  if (ess) ess.innerHTML = renderEssenceHtml(t);
   document.getElementById("overviewNot").innerHTML = t.notThis
     ? `<strong>不是什么：</strong>${esc(t.notThis)}`
     : "";
@@ -669,7 +729,7 @@ function renderOverview() {
 
 function renderMarketComparison(mc) {
   if (!mc) return "";
-  let h = `<div class="theory-block"><h3 class="theory-block-title">B5 · ${esc(mc.title || "中国对齐 / 勿误用")}</h3>`;
+  let h = `<div class="theory-block"><h3 class="theory-block-title">${esc(mc.title || "中国对齐 / 勿误用")}</h3>`;
   h += `<p class="jump-row"><button type="button" class="tree-jump" data-node="cn-market">→ 中国市场落地</button>`;
   h += `<button type="button" class="tree-jump" data-node="mis-na-copy">→ 勿照搬误区</button></p>`;
   if (mc.intro) h += `<p class="theory-intro">${fmt(mc.intro)}</p>`;
@@ -755,16 +815,32 @@ function decorateTerms(text) {
   return result;
 }
 
+function renderCoreBlocks(text) {
+  if (!text) return "";
+  const paras = String(text)
+    .split(/\n\n+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (!paras.length) return "";
+  return `<div class="fw-core">${paras
+    .map((p) => `<p>${decorateTerms(p)}</p>`)
+    .join("")}</div>`;
+}
+
 function renderFrameworkNode(n, depth = 0) {
   const hasKids = n.children && n.children.length;
   const refSlug = sectionReaderId(n.sectionRef || n.label || `n-${depth}`);
   const ref = n.sectionRef
     ? `<span class="fw-ref">${esc(n.sectionRef)}</span>`
     : "";
-  const summaryHtml = n.summary ? decorateTerms(n.summary) : "";
-  const inlineSummary = summaryHtml
-    ? `<span class="fw-inline-summary">${summaryHtml}</span>`
+  const core = (n.core || "").trim();
+  const summary = (n.summary || "").trim();
+  const headerLine = core ? summary : summary.length <= 36 ? summary : "";
+  const bodyText = core || (summary.length > 36 ? summary : "");
+  const headerSummary = headerLine
+    ? `<span class="fw-inline-summary">${decorateTerms(headerLine)}</span>`
     : "";
+  const coreHtml = renderCoreBlocks(bodyText);
 
   const chips = (n.keyPoints || [])
     .map((p, i) => renderFrameworkChip(p, refSlug, i))
@@ -772,23 +848,21 @@ function renderFrameworkNode(n, depth = 0) {
   const chipsRow = chips ? `<div class="fw-chips">${chips}</div>` : "";
 
   const kidsHtml = hasKids
-    ? `<div class="fw-children">${renderFrameworkTree(n.children, depth + 1)}</div>`
+    ? `<div class="fw-children fw-children-d${depth}">${renderFrameworkTree(n.children, depth + 1)}</div>`
     : "";
-  const bodyHtml = chipsRow + kidsHtml;
+  const bodyHtml = coreHtml + chipsRow + kidsHtml;
 
-  // Leaf: no children, no chips → render as flat row with summary inline
-  if (!hasKids && !chips) {
+  if (!hasKids && !chips && !coreHtml) {
     return `<div class="fw-leaf fw-depth-${depth}">
-      <span class="fw-label">${esc(n.label)}</span>${ref}${inlineSummary}
+      <span class="fw-label">${esc(n.label)}</span>${ref}${headerSummary}
     </div>`;
   }
 
-  // Container node with body
-  const openAttr = depth === 0 ? " open" : "";
+  const openAttr = depth <= 2 ? " open" : "";
   return (
     `<details class="fw-node fw-depth-${depth}"${openAttr}>` +
     `<summary class="fw-summary-row">` +
-    `<span class="fw-label">${esc(n.label)}</span>${ref}${inlineSummary}` +
+    `<span class="fw-label">${esc(n.label)}</span>${ref}${headerSummary}` +
     `</summary>` +
     `<div class="fw-body">${bodyHtml}</div></details>`
   );
@@ -959,7 +1033,7 @@ function renderTheory() {
   const t = DATA.theory;
   let h = "";
 
-  h += `<div class="theory-block"><h3 class="theory-block-title">B0 · 一句话</h3>`;
+    h += `<div class="theory-block"><h3 class="theory-block-title">一句话</h3>`;
   if (t.oneLiner) h += `<p class="one-liner">${esc(t.oneLiner)}</p>`;
   if (t.definition && t.definition !== t.oneLiner)
     h += `<p class="muted">白话：${esc(t.definition)}</p>`;
@@ -967,18 +1041,18 @@ function renderTheory() {
   h += `</div>`;
 
   if (t.frameworkTree && t.frameworkTree.length) {
-    h += `<div class="theory-block"><h3 class="theory-block-title">B1 · 全书理论框架（按章展开）</h3>`;
-    h += `<p class="muted">与书本目录一致：点击章/节逐层展开；每节可书内检索、跳转概念图谱。</p>`;
+    h += `<div class="theory-block"><h3 class="theory-block-title">全书理论框架（按章展开）</h3>`;
+    h += `<p class="muted">与书本目录一致。标题旁是一句扫读；展开后应看到几段核心内容，不是口号。</p>`;
     h += renderFrameworkTree(t.frameworkTree);
     h += `</div>`;
   }
 
   if (t.introForBeginners) {
-    h += `<div class="theory-block"><h3 class="theory-block-title">B3 · 入门导引</h3><div class="theory-intro">${esc(t.introForBeginners)}</div></div>`;
+    h += `<div class="theory-block"><h3 class="theory-block-title">入门导引</h3><div class="theory-intro">${esc(t.introForBeginners)}</div></div>`;
   }
 
   if (t.pillars && t.pillars.length) {
-    h += `<div class="theory-block"><h3 class="theory-block-title">B3b · 核心概念精读</h3>`;
+    h += `<div class="theory-block"><h3 class="theory-block-title">核心概念精读</h3>`;
     t.pillars.forEach((p) => {
       h += `<div class="theory-pillar"><h4>${esc(p.name || "")}</h4>`;
       if (p.definition) h += `<p><strong>定义</strong> ${fmt(p.definition)}</p>`;
@@ -996,7 +1070,7 @@ function renderTheory() {
     h += `</div>`;
   }
 
-  h += `<div class="theory-block theory-block-b4"><h3 class="theory-block-title">B4 · 快速学习</h3>`;
+  h += `<div class="theory-block theory-block-b4"><h3 class="theory-block-title">快速学习</h3>`;
 
   if (t.decisionGuide && t.decisionGuide.length) {
     h += `<h4>决策指南</h4><table class="decision-guide"><thead><tr><th>判断</th><th>做法</th><th>图谱</th></tr></thead><tbody>`;
@@ -1147,27 +1221,57 @@ function cleanChunkText(text) {
   return blocks;
 }
 
-function buildReadingTree() {
-  const tree = (DATA.theory && DATA.theory.frameworkTree) || [];
-  // 若顶级是单根节点（如「书名」）且无 sectionRef，则穿透取 children 作为顶层章
-  let roots = tree;
-  if (
-    tree.length === 1 &&
-    !tree[0].sectionRef &&
-    Array.isArray(tree[0].children) &&
-    tree[0].children.length
-  ) {
-    roots = tree[0].children;
-  }
+const JUNK_CHAPTER_RE =
+  /版权|目录|各方赞誉|内容简介|作者简介|献词|致谢|关于作者|制作说明|重要词汇|术语表|译者后记|译者跋|译者手记|出版后记|延伸阅读|参考文献|著作一览|^关键词$|^注释$|COPYRIGHT|前言与推荐/;
+
+function uniqueIndexChapters() {
+  if (!BOOK_INDEX || !BOOK_INDEX.chunks) return [];
   const out = [];
-  roots.forEach((ch) => {
-    if (!ch.sectionRef) return;
-    out.push({ level: 0, label: ch.label || "", sectionRef: ch.sectionRef });
-    (ch.children || []).forEach((sec) => {
-      if (!sec.sectionRef) return;
-      out.push({ level: 1, label: sec.label || "", sectionRef: sec.sectionRef });
+  const seen = new Set();
+  BOOK_INDEX.chunks.forEach((c) => {
+    const title = String(c.chapter || "")
+      .replace(/\s*\(\d+\)\s*$/, "")
+      .trim();
+    if (!title || JUNK_CHAPTER_RE.test(title)) return;
+    if (seen.has(title)) return;
+    seen.add(title);
+    out.push({
+      level: 0,
+      label: title,
+      sectionRef: c.sectionRef || title,
     });
   });
+  return out;
+}
+
+function buildReadingTree() {
+  const fromIndex = uniqueIndexChapters();
+  if (fromIndex.length) return fromIndex;
+
+  const tree = (DATA.theory && DATA.theory.frameworkTree) || [];
+  const out = [];
+  const seen = new Set();
+
+  function walk(nodes, level) {
+    (nodes || []).forEach((n) => {
+      if (n.sectionRef) {
+        const key = normalizeSectionKey(n.sectionRef) || n.sectionRef;
+        if (key && !seen.has(key)) {
+          seen.add(key);
+          out.push({
+            level: Math.min(level, 1),
+            label: n.label || "",
+            sectionRef: n.sectionRef,
+          });
+        }
+        walk(n.children, level + 1);
+      } else {
+        walk(n.children, level);
+      }
+    });
+  }
+
+  walk(tree, 0);
   return out;
 }
 
@@ -1220,8 +1324,11 @@ function renderReadingPath() {
     const meta = document.getElementById("rpMainMeta");
     const body = document.getElementById("rpMainBody");
     if (!chunks.length) {
-      meta.textContent = "未匹配到正文";
-      body.innerHTML = `<p class="muted">无 book-index 数据。可在 K 区检索：<button type="button" class="book-search-trigger" data-query="${esc(item.label)}">${esc(item.label)}</button></p>`;
+      const indexReady = !!(BOOK_INDEX && BOOK_INDEX.chunks && BOOK_INDEX.chunks.length);
+      meta.textContent = indexReady ? "未匹配到正文" : "正在加载书内索引…";
+      body.innerHTML = indexReady
+        ? `<p class="muted">这一节还对不上原文。可在「书内问答」检索：<button type="button" class="book-search-trigger" data-query="${esc(item.label)}">${esc(item.label)}</button></p>`
+        : `<p class="muted">书内原文还在加载，出来后会自动显示。请硬刷新后再试。</p>`;
       bindBookSearchTriggers(body);
       return;
     }
@@ -1315,15 +1422,50 @@ function subsectionLabel(ref) {
 }
 
 function renderExisting() {
+  const el = document.getElementById("existingLinks");
+  if (!el) return;
   const l = DATA.existingKnowledgeLinks || [];
-  document.getElementById("existingLinks").innerHTML = l.length
-    ? l.map((x) => `<a href="${x.path || "#"}">${esc(x.label)}</a> (${esc(x.status || "")})`).join("<br>")
-    : "<p class='muted'>Merge 后填入</p>";
+  if (!l.length) {
+    el.innerHTML = "<p class='muted'>还没有和其他方法论对上。</p>";
+    return;
+  }
+  el.innerHTML = `<div class="exist-list">${l
+    .map((x) => {
+      const label = x.label || x.target || "";
+      const status = x.status || x.relation || "";
+      const note = x.note || "";
+      return `<article class="exist-card">
+        <div class="exist-head">
+          <strong>${esc(label)}</strong>
+          ${status ? `<span class="exist-tag">${esc(status)}</span>` : ""}
+        </div>
+        ${note ? `<p>${esc(note)}</p>` : ""}
+      </article>`;
+    })
+    .join("")}</div>`;
 }
 
 function renderSkillBridge() {
-  document.getElementById("skillBridge").textContent =
-    "Skill: skills/" + DATA.meta.slug + "/SKILL.md";
+  const el = document.getElementById("skillBridge");
+  if (!el) return;
+  const sb = DATA.skillBridge || {};
+  const scenes = sb.scenes || [];
+  if (!scenes.length) {
+    el.innerHTML = `<p class="muted">还没有应用场景。</p>`;
+    return;
+  }
+  el.innerHTML = `
+    ${sb.lead ? `<p class="bridge-lead">${esc(sb.lead)}</p>` : ""}
+    <div class="bridge-scenes">${scenes
+      .map(
+        (s) => `<article class="bridge-card">
+        <div class="bridge-when">${esc(s.when || "")}</div>
+        <p>${esc(s.do || "")}</p>
+        ${s.say ? `<p class="bridge-say">对 Cursor 说：${esc(s.say)}</p>` : ""}
+      </article>`
+      )
+      .join("")}</div>
+  `;
 }
 
 function chapterKey(ch) {
@@ -1761,7 +1903,6 @@ function openNodeSidebar(n) {
     );
   }
   if (n.context && n.context.length) h += section("场景", `<p>${esc(n.context.join("、"))}</p>`);
-  if (n.skillRef) h += section("Skill", `<p>${esc(n.skillRef)}</p>`);
   if (n.bookSearchTerms && n.bookSearchTerms.length) {
     h += section(
       "书内检索",
@@ -1918,7 +2059,7 @@ function hideBootOverlay() {
     initGraph();
     hideBootOverlay();
 
-    setBootMessage("正在后台加载书内索引（约 3MB，E/K 区稍后可用）…");
+    setBootMessage("正在后台加载书内索引（约 3MB，路径阅读和书内问答稍后可用）…");
     loadBookIndex().then((idx) => {
       BOOK_INDEX = idx;
       if (!BOOK_INDEX || !BOOK_INDEX.chunks || !BOOK_INDEX.chunks.length) {

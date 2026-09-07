@@ -125,7 +125,7 @@ function renderPeriodStory(period) {
     <p class="period-note muted">拓展阅读 · 与 Foote《Principles of Paleontology》章节交叉引用，非教材逐字替代。</p>
     ${taxaHtml ? `<div class="taxon-strip-head">这一纪的明星生物</div><div class="taxon-strip">${taxaHtml}</div>` : ""}
     <div class="period-ctas">${ctas}
-      <button type="button" class="book-search-trigger" data-query="${esc((period.bookSearchTerms || [])[0] || period.nameEn)}">K 区追问</button>
+      <button type="button" class="book-search-trigger" data-query="${esc((period.bookSearchTerms || [])[0] || period.nameEn)}">书内追问</button>
     </div>
   </div>`;
 }

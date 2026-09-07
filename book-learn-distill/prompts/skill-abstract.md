@@ -8,7 +8,7 @@
 ---
 name: <slug>
 description: >-
-  <一句话：何时触发本方向能力>。来源：读书蒸馏 <书目简写>。知识图谱：作业输出/<slug>_知识图谱.html
+  <一句话：何时触发本方向能力>。来源：读书蒸馏 <书目简写>。知识图谱：publish/知识图谱/<slug>_知识图谱.html
 disable-model-invocation: true
 ---
 ```
@@ -22,7 +22,7 @@ disable-model-invocation: true
 5. **争议下的默认立场**（仅写 04-human-review 已确认的）  
 6. **检查清单**（调用本 skill 时逐步核对）  
 7. **证据** → `references/book-evidence.md`（章节索引，无全文）  
-8. **知识图谱** → `../../作业输出/<slug>_知识图谱.html`
+8. **知识图谱** → `../../publish/知识图谱/<slug>_知识图谱.html`
 
 ## `references/quick-reference.md`
 
@@ -36,6 +36,6 @@ disable-model-invocation: true
   "version": 1,
   "sources": [],
   "distilledFrom": "book-learn-distill",
-  "graphHtml": "作业输出/<slug>_知识图谱.html"
+  "graphHtml": "publish/知识图谱/<slug>_知识图谱.html"
 }
 ```

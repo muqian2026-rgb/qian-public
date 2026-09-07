@@ -11,7 +11,8 @@ disable-model-invocation: false
 > **人读**：[docs/book-learn-distill.md](../../docs/book-learn-distill.md)  
 > **工作区**：[learn/](../../learn/)  
 > **双交付物**：`skills/<slug>/` + `作业输出/<slug>_知识图谱.html`  
-> **其它管线**（领域/年表、内部体系等）在作者私有库维护，本公开仓库仅含 book 管线。
+> **并列管线**：要把书压成能读完的版本 → [book-abridged-edition](../book-abridged-edition/SKILL.md)  
+> **其它管线**（领域/年表、内部体系等）在作者私有库维护，本公开仓库含 book 概述管线 + 简读管线。
 
 ## 何时启动
 

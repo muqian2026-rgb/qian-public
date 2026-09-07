@@ -3,19 +3,18 @@
 ## 默认双交付
 
 1. `skills/<slug>/` — Agent 调用  
-2. `作业输出/<slug>_知识图谱.html` — 人读与探索  
+2. `publish/知识图谱/<slug>_知识图谱.html` — 人读与探索  
 
 ## 知识图谱 HTML · 区块 A–J（全部必做）
 
 | 区块 | ID | 数据源字段 |
 |------|-----|------------|
 | A 方向总览 | `#overview` | meta, theory.definition, theory.notThis |
-| B 核心理论 | `#theory` | theory.pillars, theory.coreClaims |
+| B 核心理论 | `#theory` | theory.pillars, theory.coreClaims, **theory.frameworkTree[].core**（每节 2–3 段，禁止口号） |
 | C 交互图谱 | `#graph` | nodes, edges |
 | D 争议解读 | `#controversies` | controversies |
 | E 阅读路径 | `#reading-path` | readingPath |
 | F 证据置信度 | 侧边栏 | nodes[].sources, confidence |
-| G 已有认知 | `#existing` | existingKnowledgeLinks |
 | H 应用桥 | `#skill-bridge` | nodes[].skillRef |
 | I 误区 | `#misconceptions` | misconceptions |
 | J 术语表 | `#glossary` | glossary |

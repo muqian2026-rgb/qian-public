@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Build 作业输出/<slug>_知识图谱.html for pipeline=system (local KG template + flows)
+# Build publish/知识图谱/<slug>_知识图谱.html for pipeline=system (local KG template + flows)
 set -euo pipefail
 SLUG="${1:?usage: build-system-preview-html.sh <slug>}"
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 LEARN="$ROOT/learn/$SLUG"
-OUT="$ROOT/作业输出/${SLUG}_知识图谱.html"
-OUT_JS="$ROOT/作业输出/${SLUG}_knowledge-graph.js"
+OUT="$ROOT/publish/知识图谱/${SLUG}_知识图谱.html"
+OUT_JS="$ROOT/publish/知识图谱/${SLUG}_knowledge-graph.js"
 TPL_HTML="$LEARN/knowledge-graph.html"
 TPL_JS="$LEARN/knowledge-graph.js"
 GRAPH="$LEARN/06-graph-data.json"
@@ -45,4 +45,4 @@ print(f"Wrote {out_js}")
 PY
 
 cp "$OUT" "$LEARN/knowledge-graph.html.bak" 2>/dev/null || true
-echo "Done: open 作业输出/${SLUG}_知识图谱.html in browser"
+echo "Done: open publish/知识图谱/${SLUG}_知识图谱.html in browser"

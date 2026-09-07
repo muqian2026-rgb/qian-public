@@ -15,7 +15,7 @@ source_root = root / meta.get("sourceRoot", "")
 if not source_root.is_dir():
     sys.exit(f"Missing sourceRoot: {source_root}")
 
-wiki_out = root / "wiki-knowledge-base/raw/systems" / slug
+wiki_out = root / "wiki/raw/systems" / slug
 learn_raw = Path(meta_path).parent / "raw"
 wiki_out.mkdir(parents=True, exist_ok=True)
 learn_raw.mkdir(parents=True, exist_ok=True)

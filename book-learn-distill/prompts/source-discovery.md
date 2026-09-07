@@ -83,4 +83,4 @@
 
 ## 博弈论 · Osborne 已定稿来源（示例）
 
-见 `learn/game-theory/01b-source-discovery.md`。
+见本书目录下的 `01b-source-discovery.md`（以博弈论为例）。

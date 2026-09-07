@@ -16,7 +16,7 @@
 | 路径 | 是什么 |
 |------|--------|
 | [book-learn-distill/](./book-learn-distill/) | v1.0 读书蒸馏：选书 → Skill + 知识图谱 |
-| [book-abridged-edition/](./book-abridged-edition/) | v2.0 原书简读：按原书顺序压成能读完的版本 |
+| [book-abridged-edition/](./book-abridged-edition/) | v2.0 原书简读：按原书自己的结构压成能读完的版本，不是观点卡片 |
 | [skills/](./skills/) | PM 门禁、调研分析、Skill 工厂、工具链 |
 | [docs/issue-prd-architecture-workflow.md](./docs/issue-prd-architecture-workflow.md) | Issue · PRD · 架构 端到端流程 |
 | [docs/xiaozhi-esp32-private-deployment.md](./docs/xiaozhi-esp32-private-deployment.md) | **ESP32 小智私有化部署实录**（架构 · 路径 · 踩坑） |
@@ -66,6 +66,7 @@ issue ready check
 ## Star 这个仓库，如果你
 
 - 想把「读书」变成可复用的 Cursor Skill
+- 大部头读不完，又不想要 AI 观点卡片
 - 需要 PRD / Issue Ready 门禁或竞品分析模板
 - 在做 AI 学习 / 蒸馏 / PM 产研工作流
 

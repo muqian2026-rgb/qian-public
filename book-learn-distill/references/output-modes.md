@@ -3,7 +3,9 @@
 ## 默认双交付
 
 1. `skills/<slug>/` — Agent 调用  
-2. `publish/知识图谱/<slug>_知识图谱.html` — 人读与探索  
+2. 单书 `knowledge-graph.html` — 人读与探索（书内节点）  
+
+多本书 equipped 之后还有第三层：图书馆综合图谱。只列跨书关系，按卡片阅读。见 [library-graph.md](./library-graph.md)。  
 
 ## 知识图谱 HTML · 区块 A–J（全部必做）
 

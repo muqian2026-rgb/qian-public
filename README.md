@@ -15,7 +15,7 @@
 
 | 路径 | 是什么 |
 |------|--------|
-| [book-learn-distill/](./book-learn-distill/) | v1.0 读书蒸馏：选书 → Skill + 知识图谱 |
+| [book-learn-distill/](./book-learn-distill/) | v1.0 读书蒸馏：选书 → Skill + 单书知识图谱；多本之后另做图书馆综合图谱（跨书关系卡片） |
 | [book-abridged-edition/](./book-abridged-edition/) | v2.0 原书简读：按原书自己的结构压成能读完的版本，不是观点卡片 |
 | [skills/](./skills/) | PM 门禁、调研分析、Skill 工厂、工具链 |
 | [docs/issue-prd-architecture-workflow.md](./docs/issue-prd-architecture-workflow.md) | Issue · PRD · 架构 端到端流程 |
@@ -78,4 +78,4 @@ issue ready check
 
 ---
 
-*Last updated: 2026-09-07*
+*Last updated: 2026-09-08*

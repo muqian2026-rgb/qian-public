@@ -2,7 +2,7 @@
 
 > 把「读一本书」做成可重复、可继承、可合规的工程流水线。  
 > **输入**：一个学习方向 + 权威书目  
-> **输出**：① Domain Skill（Agent 可调用）② 知识图谱 HTML（人可探索）
+> **输出**：① Domain Skill（Agent 可调用）② 单书知识图谱 HTML（人可探索）③ 多本之后：图书馆综合图谱（跨书关系卡片）
 
 跑在 [Cursor](https://cursor.com) / Claude Code 上的 Agent Skill：选书 → 骨架 → PDF 校验 → 人机思辨 → 双交付物。
 
@@ -31,7 +31,8 @@ Intake → Discover → Source → Skeleton → Ingest → Synthesize
 
 ## 特点
 
-- **双交付物**：Agent 可执行的 Skill + 人可探索的单文件 HTML，同源
+- **双交付物**：Agent 可执行的 Skill + 人可探索的单书 HTML，同源
+- **图书馆层**：多本书 equipped 之后，综合图谱只列跨书关系，按卡片阅读，不用力导向
 - **三管线分流**：book（教材）/ domain（年表）/ system（内部体系 DOCX）
 - **可中断可续跑**：每阶段一个 markdown 产物，`meta.json` 记状态
 - **合规配置化**：水印 / 免责声明走 JSON，不改代码
@@ -75,6 +76,8 @@ book-learn-distill/
 ├── prompts/                 ← 各阶段对话模板
 ├── templates/               ← 知识图谱 HTML/JS + DESIGN.md
 └── references/
+    ├── output-modes.md
+    └── library-graph.md     ← 图书馆两级图谱（跨书卡片）
 ```
 
 ---

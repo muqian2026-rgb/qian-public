@@ -170,6 +170,7 @@ learn/<slug>/
 
 ```
 作业输出/<slug>_知识图谱.html   ← 单文件、可断网、内联全部数据
+图书馆/知识图谱/                ← 综合跨书卡片 + 单书内部
 skills/<slug>/                  ← Domain Skill
 ```
 
@@ -245,7 +246,7 @@ skills/<slug>/                  ← Domain Skill
 |---|---|---|
 | A 方向总览 | 一句话 + 不是什么 | - |
 | B 核心理论 | B1 frameworkTree（叶子显示 summary，关键词点击 popover） | popover / chips |
-| C 知识图谱 | D3 力导向图，节点点击侧栏（含 sectionRef 阅读原文） | sidebar / D3 |
+| C 知识图谱 | 单书：D3 力导向；图书馆综合层：跨书关系卡片 | sidebar / cards |
 | E 路径阅读 | 左 sticky 章节树（5 章 + 20 节），右 docs 风格正文 | 双栏 docs |
 | **K 书内问答** | 命中 Persona → 作者视角卡 + 反问；否则摘录卡。下方 3 段原文巩固 | RAG-style |
 | G 与已有认知 | 链接到已有 wiki | - |
@@ -254,6 +255,8 @@ skills/<slug>/                  ← Domain Skill
 | J 术语云 | 搜索 + 章节着色 + 详情面板 | search + popover |
 
 > ⚠ 已移除：~~D 争议与解读~~（与 B/I 冗余）、~~F 证据~~（合并入节点 sidebar）
+
+After several books are equipped, add a library-level graph: cross-book relations only, read as cards. See `references/library-graph.md`.
 
 ---
 

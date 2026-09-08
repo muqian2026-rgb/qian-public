@@ -113,6 +113,7 @@ bash skills/docling-ingest/scripts/docling-to-raw.sh "/path/to/book.pdf"
    - **复杂方法论书**（同时有「分析」与「产出」两类任务）：拆 **diagnose / apply** 双 Skill → `skills/<slug>/diagnose/` + `skills/<slug>/apply/`（模板见 `ai 学习日志/learnings/2026-06-agent-architecture/templates/diagnose-apply-split.md`）。
 5. **Skill 激活测试（必过）**：Read `${CLAUDE_SKILL_DIR}/prompts/skill-activation-test.md`，填写 `learn/<slug>/skill-activation-test.md`（5 种触发 + 3 种误触发 + 自问）；通过后写 `meta.json` → `skillTestedAt`。**未通过不得标 `equipped`**。
 6. 运行 `sync-global-skills.sh <slug>`（若需全局可调用）。
+7. **图书馆两级图谱**（多本书 equipped 之后）：单书只连书内；综合页只列能解释清楚的跨书关系，用卡片阅读，不用力导向。见 `${CLAUDE_SKILL_DIR}/references/library-graph.md`。
 
 ### 6a Persona（可选）· 作者视角 K 区问答
 
@@ -188,6 +189,8 @@ Schema：`${CLAUDE_SKILL_DIR}/templates/book-persona.schema.json`
 | J | 术语云（搜索 + 章节着色 + 详情面板） | 重构自原"术语表" |
 
 > ⚠ 已移除：~~D 争议与解读~~（与 B/I 冗余）、~~F 证据~~（合并入节点 sidebar）
+
+单书 HTML 之上还有**图书馆综合图谱**：跨书关系卡片，不是第二张力导向图。见 `references/library-graph.md`。
 
 详见 `${CLAUDE_SKILL_DIR}/references/output-modes.md`。
 
